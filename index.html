@@ -677,13 +677,13 @@ const gameData = {
       sub: "Secrets Unravel",
       tabs: [
         { label: "Alibis", content: `<p>Based on information that you have collected from Act I, you ask for the guests' alibis. Margot's time of death given by the forensic officer was 3AM.</p>
-          <p><b>Bride</b><br>
+          <p><b>Bride — Erica</b><br>
           "I was asleep at 3AM. To calm the pre-wedding nerves, I went to Nathan's room a few minutes after 2AM, but he was in a deep slumber. Despite every tactic in the book, he was snoring away. I left a few minutes later and crashed too."</p>
-          <p><b>Groom</b><br>
+          <p><b>Groom — Nathan</b><br>
           "I perhaps had a bit too much to drink at the party. Which is weird because I didn't drink much but felt all the after-effects. I passed out by maybe 12:30AM but don't remember much after."</p>
-          <p><b>MOH</b><br>
+          <p><b>Maid of Honor — Anne</b><br>
           "I was with Erica until 1AM. She got a call from the reception at around 2AM. She came back looking a bit pale. Claiming that she was nervous and had to sleep it off, she asked me to leave to get her beauty sleep. I left too and crashed in my room."</p>
-          <p><b>BM</b><br>
+          <p><b>Best Man — Pierre</b><br>
           "After failing to pick up Margot and sloshed like hell, I just crashed."</p>` },
         { label: "Erica's Call", hidden: true, content: `<p>"I got a call from the reception. It was a muffled voice, a man's voice — asking me to go to Nathan's room to find out the truth before I 'made a mistake.'"</p>
           <p>"Scared as hell, I told Anne that I wanted to take a breather before going to sleep."</p>
@@ -756,8 +756,27 @@ const gameData = {
                 </tbody>
               </table>
               <p class="statement-footnote">System-generated extract. Account holder and third-party identifiers have been partially masked to comply with privacy regulations.</p>
+            </div>
+            <div class="unlock-box" id="conclusion-unlock-box" style="margin-top:28px;">
+              <h3>You know who paid for her. Now say the words that close the case.</h3>
+              <input type="text" id="conclusion-code-input" placeholder="Enter answer..." autocomplete="off">
+              <button id="conclusion-code-submit">Submit</button>
+              <div class="feedback" id="conclusion-code-feedback"></div>
             </div>`
-        }
+        },
+        { label: "Conclusion", hidden: true, revealOn: "conclusion", content: `<p><b>The Uncle in the Corridor</b></p>
+          <p>Every masked line in Margot's statement carried the same name. <b>Vesper Tan</b> — the groom's uncle, the chatty man who moved so easily between the grieving, consoling one guest and questioning the next. Bangkok. Perth. Tokyo. Bali. He had been paying for Margot's life for the better part of a year, and for a great many things that never reached a bank ledger at all.</p>
+          <p>It was not kindness. It was an affair, kept alive in borrowed weekends and hotel bars — and the matchbook Nathan found gleaming beside his bed was hers, carried home from the little place where the two of them always met.</p>
+          <p><b>What he asked of her</b></p>
+          <p>Vesper had no interest in a wedding. A marriage would move his sister's fortune into Nathan's hands and out of his reach for good. So he did not stop the wedding himself — he had Margot do it, and he made her believe it was her own idea.</p>
+          <p>He knew what to lean on. Margot had always known about Nathan's old crush on her, and Vesper fed that thread until she was certain the wrong woman was walking down the aisle. It was Margot who dosed Nathan's drink at the party — which is why a man who "didn't drink much" felt every after-effect and was face-down by half past twelve. It was Margot who slipped into his room, left the note where it would be found, and let the matchbook fall by the bed. The note reads like a lament for Nathan. It was never about Nathan.</p>
+          <p><b>The call from the reception</b></p>
+          <p>Then Vesper made one call. A muffled man's voice on the reception line, telling the bride to go to Nathan's room and learn the truth "before she made a mistake." He timed it precisely: Erica entered the corridor exactly as Margot was leaving it. The bride was meant to walk in on the note, the matchbook, and the woman in the hallway, and draw the only conclusion available to her.</p>
+          <p>It failed on the smallest detail. Nathan was too far under to be woken, and in that deep sleep he murmured Erica's name — the one thing Vesper could never have accounted for. The bride left the room more confused than betrayed, and entirely certain of the man she was marrying.</p>
+          <p><b>3AM</b></p>
+          <p>By then Margot had become the only person alive who could name him. She had done everything he asked and had begun to ask for something in return — an ending to the pretence, a life out in the open. At three in the morning Vesper went to her room, and the plot became a murder.</p>
+          <p>In the morning he was the first to console the couple and the loudest to ask how it could have happened. He was not looking for the killer. He was listening to find out how close anyone had come.</p>
+          <p style="font-style:italic;">He paid for her flights, her silence, and finally for the corridor she was never supposed to be seen in. Vesper Tan killed Margot.</p>` }
       ],
       code: "SOFIA",
       hint: "Read the matchbook name backwards.",
@@ -787,6 +806,7 @@ const state = {
   currentTab: 0,
   solved: false,
   act2PopupOpened: false,
+  conclusionUnlocked: false,
   persona: null
 };
 function loadState() {
@@ -808,7 +828,8 @@ function saveState() {
       currentAct: state.currentAct,
       currentTab: state.currentTab,
       solved: state.solved,
-      act2PopupOpened: state.act2PopupOpened
+      act2PopupOpened: state.act2PopupOpened,
+      conclusionUnlocked: state.conclusionUnlocked
     };
     localStorage.setItem(STATE_KEY, JSON.stringify(toSave));
   } catch (e) {
@@ -822,6 +843,7 @@ function resetGame() {
   state.currentTab = 0;
   state.solved = false;
   state.act2PopupOpened = false;
+  state.conclusionUnlocked = false;
   localStorage.removeItem(STATE_KEY);
   hideBridePopup();
   const panel = document.getElementById('settings-panel');
@@ -1000,7 +1022,11 @@ function renderMain() {
   tabContents.innerHTML = '';
   act.tabs.forEach((tab, i) => {
     if (tab.hidden) {
-      const revealed = act.singleStage ? actComplete : ((tab.revealOn === 'clue') ? clueSolved : actComplete);
+      const revealed = act.singleStage
+        ? actComplete
+        : tab.revealOn === 'clue' ? clueSolved
+        : tab.revealOn === 'conclusion' ? !!state.conclusionUnlocked
+        : actComplete;
       if (!revealed) return;
     }
     const btn = document.createElement('button');
@@ -1060,6 +1086,36 @@ function renderMain() {
     margotBtn.addEventListener('click', margotSubmit);
     document.getElementById('margot-code-input').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') margotSubmit();
+    });
+  }
+  if (state.conclusionUnlocked) {
+    const oldBox = document.getElementById('conclusion-unlock-box');
+    if (oldBox) oldBox.remove();
+  }
+  const conclusionBtn = document.getElementById('conclusion-code-submit');
+  if (conclusionBtn) {
+    const conclusionSubmit = () => {
+      const input = document.getElementById('conclusion-code-input');
+      const feedback = document.getElementById('conclusion-code-feedback');
+      if (input.value.trim().toLowerCase() === 'taklewedspanni') {
+        feedback.className = 'feedback success';
+        feedback.textContent = '✔ Correct.';
+        state.conclusionUnlocked = true;
+        state.solved = true;
+        saveState();
+        setTimeout(() => {
+          state.currentTab = act.tabs.findIndex(t => t.label === 'Conclusion');
+          saveState();
+          render();
+        }, 600);
+      } else {
+        feedback.className = 'feedback error';
+        feedback.textContent = '✘ Incorrect.';
+      }
+    };
+    conclusionBtn.addEventListener('click', conclusionSubmit);
+    document.getElementById('conclusion-code-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') conclusionSubmit();
     });
   }
   const unlockArea = document.getElementById('unlock-area');
