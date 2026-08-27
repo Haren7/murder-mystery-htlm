@@ -1069,6 +1069,10 @@ function setDrawer(open) {
   if (backdrop) backdrop.classList.toggle('open', open);
   if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
+function revealNewAct() {
+  // On desktop the act list is always on screen, so there is nothing to pull up.
+  if (window.matchMedia('(max-width: 720px)').matches) setDrawer(true);
+}
 function wireDrawer() {
   const toggle = document.getElementById('drawer-toggle');
   const backdrop = document.getElementById('drawer-backdrop');
@@ -1353,10 +1357,14 @@ function submitCode(act) {
   const answer = act.code.toLowerCase();
   if (guess === answer) {
     feedback.className = 'feedback success';
+    let actUnlocked = false;
     if (act.singleStage) {
       feedback.textContent = '✔ Correct! Erica\'s Call has been revealed and the next act is now unlocked.';
       const nextId = act.id + 1;
-      if (!state.unlockedActs.includes(nextId)) state.unlockedActs.push(nextId);
+      if (!state.unlockedActs.includes(nextId)) {
+        state.unlockedActs.push(nextId);
+        actUnlocked = true;
+      }
     } else {
       feedback.textContent = '✔ Correct! The Clues tab is now unlocked.';
       state.clueUnlocked[act.id] = true;
@@ -1372,6 +1380,7 @@ function submitCode(act) {
       }
       saveState();
       render();
+      if (actUnlocked) revealNewAct();
     }, 800);
   } else {
     feedback.className = 'feedback error';
@@ -1386,14 +1395,21 @@ function submitNextCode(act) {
   if (guess === answer) {
     feedback.className = 'feedback success';
     feedback.textContent = act.isFinal ? '✔ Correct! You solved the mystery.' : '✔ Correct! The next act is now unlocked.';
+    let actUnlocked = false;
     if (act.isFinal) {
       state.solved = true;
     } else {
       const nextId = act.id + 1;
-      if (!state.unlockedActs.includes(nextId)) state.unlockedActs.push(nextId);
+      if (!state.unlockedActs.includes(nextId)) {
+        state.unlockedActs.push(nextId);
+        actUnlocked = true;
+      }
     }
     saveState();
-    setTimeout(() => render(), 800);
+    setTimeout(() => {
+      render();
+      if (actUnlocked) revealNewAct();
+    }, 800);
   } else {
     feedback.className = 'feedback error';
     feedback.textContent = '✘ Incorrect. Re-check the clue.';
