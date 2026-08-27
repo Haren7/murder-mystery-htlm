@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Till Death Do Us Part</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@500;600&display=swap" rel="stylesheet">
@@ -576,6 +577,172 @@
     padding: 12px 22px 0;
     font-style: italic;
   }
+  .tab-content img { max-width: 100%; height: auto; }
+
+  @media (max-width: 980px) {
+    #main { padding: 36px 34px; }
+  }
+
+  /* Mobile-only chrome: a top bar with the menu button, plus the drawer backdrop */
+  #mobile-bar {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #c9b47f;
+    border-bottom: 1px solid #9c8455;
+    box-shadow: 0 2px 10px rgba(50,36,18,0.18);
+  }
+  #drawer-toggle {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border: 1px solid #9c8455;
+    background: #d3bd8a;
+    color: #5c4426;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #drawer-toggle:hover { background: #c4ac78; }
+  .mobile-bar-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    font-size: 13.5px;
+    letter-spacing: 0.5px;
+    color: #5c4426;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #drawer-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 110;
+    background: rgba(54,42,28,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  #drawer-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Phone layout: the sidebar becomes a drawer that slides in over the content */
+  @media (max-width: 720px) {
+    body {
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+    /* #app-shell gets display:flex from an inline style, so it must be stacked here */
+    #app-shell {
+      flex-direction: column;
+      width: 100%;
+      min-width: 0;
+    }
+    #mobile-bar { display: flex; }
+    #drawer-backdrop { display: block; }
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 120;
+      width: 268px;
+      max-width: 84vw;
+      padding: 22px 0 24px;
+      overflow-y: auto;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      box-shadow: 6px 0 22px -8px rgba(50,36,18,0.45);
+    }
+    #sidebar.drawer-open { transform: translateX(0); }
+    #main {
+      padding: 74px 18px 48px;
+      max-width: 100%;
+      width: 100%;
+      min-width: 0;
+    }
+    #act-heading {
+      font-size: 19px;
+      margin-bottom: 18px;
+    }
+    .tabs {
+      flex-wrap: wrap;
+      gap: 2px;
+    }
+    .tab-btn {
+      padding: 8px 12px;
+      font-size: 14.5px;
+    }
+    .tab-content {
+      font-size: 16px;
+      line-height: 1.7;
+    }
+    .cipher-line {
+      font-size: 21px;
+      letter-spacing: 2px;
+      overflow-wrap: anywhere;
+      margin: 22px 0 8px;
+    }
+    .clue-code {
+      letter-spacing: 2px;
+      overflow-wrap: anywhere;
+    }
+    .unlock-box { padding: 16px 16px; }
+    .unlock-box h3 { font-size: 14px; }
+    .unlock-box input {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 10px;
+      font-size: 16px; /* 16px stops iOS from zooming in on focus */
+      padding: 11px 12px;
+    }
+    .unlock-box button {
+      width: 100%;
+      padding: 12px 18px;
+    }
+    /* Bank statement keeps its real-document look and scrolls sideways instead of being crushed */
+    .bank-statement {
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .statement-table {
+      min-width: 470px;
+      font-size: 10.5px;
+    }
+    .statement-table th { padding: 6px 7px; }
+    .statement-table td { padding: 5px 7px; }
+    .statement-table td:first-child { white-space: nowrap; }
+    .bank-header { padding: 14px 16px; }
+    .statement-title { padding: 12px 16px 4px; }
+    .statement-meta { padding: 0 16px 12px; }
+    .statement-footnote { padding: 12px 16px 0; }
+    .login-card { padding: 28px 22px; }
+    .login-game-title { font-size: 22px; }
+    .login-game-subtitle {
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+    .login-card h2 { font-size: 18px; }
+    .login-card select { font-size: 16px; }
+    .login-card button { padding: 12px 28px; }
+    .bride-popup-card { padding: 22px 20px; }
+    .bride-popup-card-wide { max-height: 86vh; }
+    .bride-popup-card button { padding: 11px 22px; }
+  }
 </style>
 </head>
 <body>
@@ -595,6 +762,11 @@
   </div>
 </div>
 <div id="app-shell" style="display:none;">
+<div id="mobile-bar">
+  <button id="drawer-toggle" aria-label="Open acts menu" aria-expanded="false">☰</button>
+  <div class="mobile-bar-title">Till Death Do Us Part</div>
+</div>
+<div id="drawer-backdrop"></div>
 <div id="sidebar">
   <h1>Till Death Do Us Part</h1>
   <div class="subtitle">a wedding themed murder mystery</div>
@@ -766,15 +938,17 @@ const gameData = {
         },
         { label: "Conclusion", hidden: true, revealOn: "conclusion", content: `<p><b>The Uncle in the Corridor</b></p>
           <p>Every masked line in Margot's statement carried the same name. <b>Vesper Tan</b> — the groom's uncle, the chatty man who moved so easily between the grieving, consoling one guest and questioning the next. Bangkok. Perth. Tokyo. Bali. He had been paying for Margot's life for the better part of a year, and for a great many things that never reached a bank ledger at all.</p>
-          <p>It was not kindness. It was an affair, kept alive in borrowed weekends and hotel bars — and the matchbook Nathan found gleaming beside his bed was hers, carried home from the little place where the two of them always met.</p>
+          <p><b>The clause in the will</b></p>
+          <p>The money in this family was never Nathan's father's. It came down Carie's side — generational wealth, held and passed on by Nathan's grandfather, and written into a will with one condition attached. The estate would go to Nathan on his marriage, provided the wedding took place before the end of this year. If the year closed with no wedding, the whole of it went instead to the old man's other child: <b>Vesper Tan</b>. A fortune, and a deadline, and only a ceremony standing between the two.</p>
+          <p>It was not kindness, and it was never an affair. It was a payment. Vesper bought a year of Margot's life — the flights, the hotels, the small luxuries she could never have explained on her own salary — and what he bought it for was one night. The matchbook Nathan found gleaming beside his bed came from the quiet little bar where Vesper had met her to settle the terms, and she carried it into that room because he asked her to.</p>
           <p><b>What he asked of her</b></p>
-          <p>Vesper had no interest in a wedding. A marriage would move his sister's fortune into Nathan's hands and out of his reach for good. So he did not stop the wedding himself — he had Margot do it, and he made her believe it was her own idea.</p>
+          <p>Vesper had no interest in a wedding. A wedding this year moved his father's estate into Nathan's hands and out of his reach for good; a cancelled one handed it to him in full. So he did not stop the wedding himself — he had Margot do it, and he made her believe it was her own idea.</p>
           <p>He knew what to lean on. Margot had always known about Nathan's old crush on her, and Vesper fed that thread until she was certain the wrong woman was walking down the aisle. It was Margot who dosed Nathan's drink at the party — which is why a man who "didn't drink much" felt every after-effect and was face-down by half past twelve. It was Margot who slipped into his room, left the note where it would be found, and let the matchbook fall by the bed. The note reads like a lament for Nathan. It was never about Nathan.</p>
           <p><b>The call from the reception</b></p>
           <p>Then Vesper made one call. A muffled man's voice on the reception line, telling the bride to go to Nathan's room and learn the truth "before she made a mistake." He timed it precisely: Erica entered the corridor exactly as Margot was leaving it. The bride was meant to walk in on the note, the matchbook, and the woman in the hallway, and draw the only conclusion available to her.</p>
           <p>It failed on the smallest detail. Nathan was too far under to be woken, and in that deep sleep he murmured Erica's name — the one thing Vesper could never have accounted for. The bride left the room more confused than betrayed, and entirely certain of the man she was marrying.</p>
           <p><b>3AM</b></p>
-          <p>By then Margot had become the only person alive who could name him. She had done everything he asked and had begun to ask for something in return — an ending to the pretence, a life out in the open. At three in the morning Vesper went to her room, and the plot became a murder.</p>
+          <p>By then Margot had become the only person alive who could name him. She had done everything he asked, the plan had failed anyway, and she had begun to ask for more than the arrangement allowed — the rest of her money, and a way out that did not leave her holding his secret alone. At three in the morning Vesper went to her room, and the plot became a murder.</p>
           <p>In the morning he was the first to console the couple and the loudest to ask how it could have happened. He was not looking for the killer. He was listening to find out how close anyone had come.</p>
           <p style="font-style:italic;">He paid for her flights, her silence, and finally for the corridor she was never supposed to be seen in. Vesper Tan killed Margot.</p>` }
       ],
@@ -846,6 +1020,7 @@ function resetGame() {
   state.conclusionUnlocked = false;
   localStorage.removeItem(STATE_KEY);
   hideBridePopup();
+  setDrawer(false);
   const panel = document.getElementById('settings-panel');
   if (panel) panel.classList.remove('open');
   render();
@@ -884,6 +1059,29 @@ function initPersona() {
   updatePersonaLabel();
   wireSettingsPanel();
   wireBridePopup();
+  wireDrawer();
+}
+function setDrawer(open) {
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('drawer-backdrop');
+  const toggle = document.getElementById('drawer-toggle');
+  if (sidebar) sidebar.classList.toggle('drawer-open', open);
+  if (backdrop) backdrop.classList.toggle('open', open);
+  if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function wireDrawer() {
+  const toggle = document.getElementById('drawer-toggle');
+  const backdrop = document.getElementById('drawer-backdrop');
+  const sidebar = document.getElementById('sidebar');
+  if (!toggle || !backdrop || !sidebar) return;
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setDrawer(!sidebar.classList.contains('drawer-open'));
+  });
+  backdrop.addEventListener('click', () => setDrawer(false));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setDrawer(false);
+  });
 }
 function updatePersonaLabel() {
   const label = document.getElementById('current-persona-label');
@@ -907,6 +1105,7 @@ function wireSettingsPanel() {
     localStorage.removeItem(PERSONA_KEY);
     state.persona = null;
     panel.classList.remove('open');
+    setDrawer(false);
     document.getElementById('persona-select').value = '';
     document.getElementById('persona-confirm').disabled = true;
     document.getElementById('app-shell').style.display = 'none';
@@ -1006,6 +1205,7 @@ function renderSidebar() {
       state.currentAct = act.id;
       state.currentTab = 0;
       saveState();
+      setDrawer(false);
       render();
     });
     list.appendChild(div);
