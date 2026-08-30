@@ -793,11 +793,11 @@
 <div id="bride-popup-overlay" class="bride-popup-overlay">
   <div class="bride-popup-card bride-popup-card-wide">
     <h3>Erica's Call</h3>
-    <p class="bride-popup-body">"I got a call from the reception. It was a muffled voice, a man's voice — asking me to go to Nathan's room to find out the truth before I 'made a mistake.'"</p>
-    <p class="bride-popup-body">"Scared as hell, I told Anne that I wanted to take a breather before going to sleep."</p>
-    <p class="bride-popup-body">"I ran to Nathan's room and just as I entered the <span class="popup-highlight">corridor</span> — I saw Margot exiting the same."</p>
-    <p class="bride-popup-body">"Since I had the second key to his room, I went in — only to find Nathan snoring away. He doesn't know this but when he is in deep sleep he tends to say my name. And that's the exact way I found him."</p>
-    <p class="bride-popup-body">"I tried to wake him up but he was in too deep a sleep. I left the room, confused as to why Margot was in the <span class="popup-highlight">corridor</span>. Did she try to come into his room? Did she want something? Was she meeting someone else on that floor? I guess we won't know. But one thing is for sure — the person who called me did not know my trust for Nathan. I knew of his old crush on Margot, but I also know his immense love for me."</p>
+    <p class="bride-popup-body">I got a call from the reception. It was a muffled voice, a man's voice — asking me to go to Nathan's room to find out the truth before I 'made a mistake.'</p>
+    <p class="bride-popup-body">Scared as hell, I told Anne that I wanted to take a breather before going to sleep.</p>
+    <p class="bride-popup-body">I ran to Nathan's room and just as I entered the <span class="popup-highlight">corridor</span> — I saw Margot exiting the same.</p>
+    <p class="bride-popup-body">Since I had the second key to his room, I went in — only to find Nathan snoring away. He doesn't know this but when he is in deep sleep he tends to say my name. And that's the exact way I found him.</p>
+    <p class="bride-popup-body">I tried to wake him up but he was in too deep a sleep. I left the room, confused as to why Margot was in the <span class="popup-highlight">corridor</span>. Did she try to come into his room? Did she want something? Was she meeting someone else on that floor? I guess we won't know. But one thing is for sure — the person who called me did not know my trust for Nathan. I knew of his old crush on Margot, but I also know his immense love for me.</p>
     <button id="bride-popup-close">Close</button>
   </div>
 </div>
@@ -857,11 +857,11 @@ const gameData = {
           "I was with Erica until 1AM. She got a call from the reception at around 2AM. She came back looking a bit pale. Claiming that she was nervous and had to sleep it off, she asked me to leave to get her beauty sleep. I left too and crashed in my room."</p>
           <p><b>Best Man — Pierre</b><br>
           "After failing to pick up Margot and sloshed like hell, I just crashed."</p>` },
-        { label: "Erica's Call", hidden: true, content: `<p>"I got a call from the reception. It was a muffled voice, a man's voice — asking me to go to Nathan's room to find out the truth before I 'made a mistake.'"</p>
-          <p>"Scared as hell, I told Anne that I wanted to take a breather before going to sleep."</p>
-          <p>"I ran to Nathan's room and just as I entered the corridor — I saw Margot exiting the same."</p>
-          <p>"Since I had the second key to his room, I went in — only to find Nathan snoring away. He doesn't know this but when he is in deep sleep he tends to say my name. And that's the exact way I found him."</p>
-          <p>"I tried to wake him up but he was in too deep a sleep. I left the room, confused as to why Margot was in the corridor. Did she try to come into his room? Did she want something? Was she meeting someone else on that floor? I guess we won't know. But one thing is for sure — the person who called me did not know my trust for Nathan. I knew of his old crush on Margot, but I also know his immense love for me."</p>` }
+        { label: "Erica's Call", hidden: true, content: `<p>I got a call from the reception. It was a muffled voice, a man's voice — asking me to go to Nathan's room to find out the truth before I 'made a mistake.'</p>
+          <p>Scared as hell, I told Anne that I wanted to take a breather before going to sleep.</p>
+          <p>I ran to Nathan's room and just as I entered the corridor — I saw Margot exiting the same.</p>
+          <p>Since I had the second key to his room, I went in — only to find Nathan snoring away. He doesn't know this but when he is in deep sleep he tends to say my name. And that's the exact way I found him.</p>
+          <p>I tried to wake him up but he was in too deep a sleep. I left the room, confused as to why Margot was in the corridor. Did she try to come into his room? Did she want something? Was she meeting someone else on that floor? I guess we won't know. But one thing is for sure — the person who called me did not know my trust for Nathan. I knew of his old crush on Margot, but I also know his immense love for me.</p>` }
       ],
       code: "corridor",
       hint: "",
@@ -885,7 +885,7 @@ const gameData = {
           way"</p>
           <p class="cipher-line">JMRERGMEP WXEXIQIRXW</p>
           <div class="unlock-box" style="margin-top:28px;">
-            <h3>Two words. What was really being talked about?</h3>
+            <h3>Two words</h3>
             <input type="text" id="margot-code-input" placeholder="Enter answer..." autocomplete="off">
             <button id="margot-code-submit">Submit</button>
             <div class="feedback" id="margot-code-feedback"></div>
@@ -930,7 +930,7 @@ const gameData = {
               <p class="statement-footnote">System-generated extract. Account holder and third-party identifiers have been partially masked to comply with privacy regulations.</p>
             </div>
             <div class="unlock-box" id="conclusion-unlock-box" style="margin-top:28px;">
-              <h3>You know who paid for her. Now say the words that close the case.</h3>
+              <h3>Come upto us. Make your guess, state your reason</h3>
               <input type="text" id="conclusion-code-input" placeholder="Enter answer..." autocomplete="off">
               <button id="conclusion-code-submit">Submit</button>
               <div class="feedback" id="conclusion-code-feedback"></div>
@@ -1301,7 +1301,7 @@ function renderMain() {
     const conclusionSubmit = () => {
       const input = document.getElementById('conclusion-code-input');
       const feedback = document.getElementById('conclusion-code-feedback');
-      if (input.value.trim().toLowerCase() === 'taklewedspanni') {
+      if (input.value.trim().toLowerCase() === 'moments') {
         feedback.className = 'feedback success';
         feedback.textContent = '✔ Correct.';
         state.conclusionUnlocked = true;
